@@ -14,7 +14,7 @@
             <ul class="navbar-nav d-flex justify-content-end w-100">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-user"></i>
+                    {{ Auth::user()->name }} <i class="fa-solid fa-user" style="margin-left: 8px;"></i>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <li><a class="dropdown-item" href="{{ route('logout') }}">Logout</a></li>

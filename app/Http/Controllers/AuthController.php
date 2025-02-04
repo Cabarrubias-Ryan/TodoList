@@ -10,18 +10,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Throwable;
 
-class GoogleAuthController extends Controller
+class AuthController extends Controller
 {
-    public function redirect()
+    public function redirect($provider)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
-    public function callback()
+    public function callback($provider)
     {
         try {
             // Get the user information from Google
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver($provider)->user();
         } catch (Throwable $e) {
             return redirect('/')->with('error', 'Google authentication failed.');
         }
@@ -40,7 +40,7 @@ class GoogleAuthController extends Controller
                 'name' => $user->name,
                 'password' => bcrypt(Str::random(16)), // Set a random password
                 'email_verified_at' => now(),
-                'google_id' => $user->id,
+                'account_id' => $user->id,
                 'created_at' => now(),
                 'updated_at' => null,
                 'deleted_at' => null,
@@ -53,10 +53,11 @@ class GoogleAuthController extends Controller
     }
     public function logout()
     {
-        session()->flush();
+        session()->invalidate();
+        session()->regenerateToken();
         Auth::logout();
 
         // Redirect to the homepage or login page
-        return redirect()->route('welcome');
+        return redirect('/');
     }
 }
