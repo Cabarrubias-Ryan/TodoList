@@ -49,7 +49,7 @@ class AuthController extends Controller
         }
 
         // Redirect the user to the dashboard or any other secure page
-        return redirect('/home');
+        return redirect('/home')->with('login_success', 'You have successfully logged in.');
     }
     public function logout()
     {

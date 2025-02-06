@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     return view('auth/welcome');
@@ -17,8 +18,7 @@ Route::get('/auth/{provider}/call-back', [AuthController::class, 'callback'])->n
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', function () {
-        return view('content/home');
-    })->name('home');
+    Route::get('home', [HomeController::class, 'index'])->name('home');
     Route::get('home/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('home/addtask',[HomeController::class, 'addTask'])->name('task');
 });

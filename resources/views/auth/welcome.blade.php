@@ -22,7 +22,7 @@
                                     </ul>
                                 </div>
                             @endif
-                            <form class="p-3 mt-3">
+                            <div class="p-3 mt-3">
                                 <div class="form-group">
                                   <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Username">
                                 </div>
@@ -46,7 +46,7 @@
                                         <i class="fa-brands fa-github"></i>
                                     </a>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
