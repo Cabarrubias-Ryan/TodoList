@@ -11,11 +11,14 @@ class Account extends Authenticatable
 
     protected $fillable = [
         'id',
+        'username',
+        'password',
         'name',
         'email',
         'email_verified_at',
-        'password',
+        'email_password',
         'account_id',
+        'authentication_type',
         'created_at',
         'updated_at',
         'deleted_at',
