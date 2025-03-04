@@ -82,7 +82,7 @@ class AuthController extends Controller
     {
         try {
             // Get the user information from Google
-            $user = Socialite::driver($provider)->user();
+            $user = Socialite::driver($provider)->stateless()->user();
         } catch (Throwable $e) {
             return redirect('/')->with('error', 'Authentication failed.');
         }

@@ -10,7 +10,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
-    <section class="mt-5 d-flex justify-content-center align-items-center">
+    <section class="mt-4 d-flex justify-content-center align-items-center">
         <div class="row">
             <div class="mt-3">
                 <button type="button" class="btn btn-primary rounded-pill btn-sm" id="task-btn" data-bs-toggle="modal" data-bs-target="#modalAddTask">
@@ -31,7 +31,7 @@
                                     <h6 id="displayData"
                                     data-display-title="{{ $item->title}}" data-display-description="{{ $item->description}}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd"> {{ $item->title}}</h6>
                                 </div>
-                                <div>
+                                <div class="d-flex gap-2">
                                     <button type="button" class="btn btn-outline-success btn-sm btnUpdate" data-bs-toggle="modal" data-bs-target="#modalUpdateTask"
                                             data-id="{{ $item->id }}" data-title="{{ $item->title }}" data-description="{{ $item->description }}">
                                         <i class="fa-solid fa-edit"></i>
