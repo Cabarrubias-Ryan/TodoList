@@ -17,19 +17,29 @@
                     <i class="fa-solid fa-plus me-1"></i>Add Task
                 </button>
             </div>
-            <div class="mt-4">
-                <div class="border rounded-top p-4 outer-box">
-                    <div class="mb-2">
-                        <h3 class="fw-bold">Todo List</h3>
-                        <p>Stay on top of your ro-dos and boost productivity with ease.</p>
+            <div class="mt-3">
+                <div class="p-4 outer-box">
+                    <div class="mb-4">
+                        <h3 class="fw-bold text-center">Todo List</h3>
                     </div>
-                    <div class="inner-box m-2">
+                    <div class="px-2">
+                        <input type="search" class="form-control border-0 focus-none" id="search" placeholder="Search here...">
+                    </div>
+                    <div class="inner-box m-2 " id="taskList">
                         @foreach ($task as $item)
                         <ul class="list-group mt-2" style="cursor: pointer;">
                             <li class="list-group-item d-flex justify-content-between align-items-center displayData">
                                 <div>
-                                    <h6 id="displayData"
-                                    data-display-title="{{ $item->title}}" data-display-description="{{ $item->description}}" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd"> {{ $item->title}}</h6>
+                                    <h6 id="displayData" class="{{ $item->is_complete == 1 ? 'text-decoration-line-through' : '' }}"
+                                        data-display-title="{{ $item->title }}"
+                                        data-display-description="{{ $item->description }}"
+                                        data-status="{{ $item->is_complete }}"
+                                        data-id="{{ $item->id }}"
+                                        data-bs-toggle="offcanvas"
+                                        data-bs-target="#offcanvasEnd"
+                                        aria-controls="offcanvasEnd">
+                                        {{ $item->title }}
+                                    </h6>
                                 </div>
                                 <div class="d-flex gap-2">
                                     <button type="button" class="btn btn-outline-success btn-sm btnUpdate" data-bs-toggle="modal" data-bs-target="#modalUpdateTask"
@@ -43,6 +53,13 @@
                             </li>
                         </ul>
                         @endforeach
+                        @if ($task->isEmpty())
+                            <div class="text-center mt-4">
+                                <h5 class="text-muted">
+                                    No Task Found
+                                </h5>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -54,12 +71,15 @@
     <div class="mt-4">
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
         <div class="offcanvas-header">
-          <h5  class="offcanvas-title" id="title-display"></h5>
           <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+        <div class="mt-5">
+            <h5  class="offcanvas-title text-center" id="title-display"></h5>
+        </div>
         <div class="offcanvas-body my-auto mx-0 flex-grow-0">
-          <p class="text-center" id="description-display"></p>
+          <p class="text-center mb-4" id="description-display"></p>
           <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas">Close</button>
+          <button type="button" class="btn btn-success d-grid w-100 mt-2" data-bs-dismiss="offcanvas" id="task_status"></button>
         </div>
       </div>
     </div>

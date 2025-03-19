@@ -7,6 +7,8 @@
     <title>Login Page</title>
     @vite(['resources/js/app.js'])
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <main class="container-fluid">
@@ -19,26 +21,17 @@
                     <div class="">
                         <h2 class="text-center mt-4 fw-bold">Login</h2>
                         <div>
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
                             <div class="p-4 mt-3">
-                                <form action="{{ route('auth.login')}}" method="POST">
+                                <form id="loginData">
                                     @csrf
                                     <div class="mt-4">
-                                        <input type="text" class="form-control"  placeholder="Username" name="username">
+                                        <input type="text" class="form-control"  placeholder="Username" name="username" id="username">
                                     </div>
                                     <div class="mt-4">
-                                        <input type="password" class="form-control"  placeholder="Password" name="password">
+                                        <input type="password" class="form-control"  placeholder="Password" name="password" id="password">
                                     </div>
                                     <div class="mt-5" class="form-group">
-                                        <input type="submit" class="form-control btn btn-primary rounded py-2" value="Login">
+                                        <button type="button" class="form-control btn btn-primary rounded py-2" id="loginBtn">Login</button>
                                     </div>
                                 </form>
                                 <div class="text-center mt-3">
@@ -66,5 +59,14 @@
             </div>
         </div>
     </main>
+    <div class="preloader" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-4">
+            <span style="font-size: 1.7rem" class="text-primary">Logging in...</span>
+        </div>
+    </div>
+    <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

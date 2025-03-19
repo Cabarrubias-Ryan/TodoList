@@ -12,6 +12,7 @@ class Task extends Model
         'user_id',
         'title',
         'description',
+        'is_complete',
         'created_at',
         'updated_at',
         'deleted_at'

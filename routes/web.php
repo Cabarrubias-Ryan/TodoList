@@ -25,5 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('home/addtask',[HomeController::class, 'addTask'])->name('task');
     Route::post('home/update', [HomeController::class, 'editTask'])->name('update');
     Route::post('home/delete', [HomeController::class, 'deleteTask'])->name('delete');
+    Route::post('home/search',[HomeController::class, 'search'])->name('search');
+    Route::post('home/status',[HomeController::class, 'setStatus'])->name('status');
 });
 

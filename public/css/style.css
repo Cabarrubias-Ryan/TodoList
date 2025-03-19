@@ -9,9 +9,6 @@
     --tertiary-color: #71BBB2;
     --quaternary-color: #EFE9D5;
 }
-.bg-primary{
-    color: var(--primary-color);
-}
 
 body {
     font-family: 'Times New Roman', Times, serif;
@@ -30,26 +27,71 @@ body {
     align-items: center;
 }
 .preloader .spinner-border {
-    width: 5rem;
-    height: 5rem;
+    width: 7rem;
+    height: 7rem;
     border-width: 0.3rem;
 }
+/* General styles for .inner-box and .outer-box */
 .inner-box {
     overflow-y: auto;
     position: relative;
     z-index: 1;
-    height: 400px;
-    padding-right: 15px;
+    height: 405px;
+    padding: 0 10px;
+    border: var(--primary-color) 1px solid;
 }
+
 .outer-box {
     max-width: 550px;
+    min-width: 400px;
     width: 100%;
-    height:550px
+    height: 560px;
+    border: var(--primary-color) 1px solid;
+    border-radius: 14px;
+    box-sizing: border-box;
 }
+#search.form-control:focus,
+#search.form-control:hover {
+    border-color: transparent;  /* Remove hover and focus border color */
+    box-shadow: none;  /* Remove focus box-shadow */
+}
+
+#search.form-control {
+    border: none;  /* Remove all borders */
+    border-bottom: 1px solid #ccc;  /* Only bottom border */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .outer-box {
+        height: 450px; /* Adjust height for smaller screens */
+        max-width: 90%; /* Take up 90% of the screen width */
+        min-width: 90%; /* Ensure the box doesn't go too small */
+    }
+
+    .inner-box {
+        height: 300px; /* Adjust height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .outer-box {
+        height: 380px; /* Further adjust height for very small screens */
+        max-width: 95%; /* Take up 95% of the screen width */
+        min-width: 95%; /* Ensure it doesn't go too small */
+    }
+
+    .inner-box {
+        height: 250px; /* Further adjust height for smaller screens */
+    }
+}
+
+
 
 /* Width of scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 1px;
+    height: 80%;
 }
 
 /* Track (the background) */

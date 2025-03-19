@@ -92,7 +92,7 @@ $(document).ready(function () {
 
 
 $(document).ready(function () {
-    $('.btnUpdate').on('click', function () {
+    $('body').on('click', '.btnUpdate', function() {
 
         var id = $(this).data('id');
         var title = $(this).data('title');
@@ -214,9 +214,134 @@ $(document).ready(function () {
 
         var $title = $(this).data('display-title');
         var $description = $(this).data('display-description');
+        var $status = $(this).data('status');
+        var $statusID = $(this).data('id');
 
         $('#title-display').text($title);
         $('#description-display').text($description);
 
+        if($status == "0"){
+            $('#task_status').text('Complete');
+        }
+        else{
+            $('#title-display').addClass('text-decoration-line-through');
+            $('#description-display').addClass('text-decoration-line-through');
+            $('#task_status').text('Undo');
+        }
+
+        $('body').on('click', '#task_status', function () {
+            $.ajax({
+                type: 'POST',
+                url: '/home/status',
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    status: $status,
+                    statusID: $statusID,
+                },
+                dataType: 'json',
+                success: function(){
+                    location.reload();
+                },
+                error: function () {
+                    Swal.fire('Error!', 'Something went wrong, please try again.', 'error');
+                }
+            });
+        });
+
     })
 })
+
+$(document).ready(function () {
+    $('#search').on('keyup', function() {
+        var data = $(this).val().toLowerCase();
+
+        if(data.length >= 1){
+            $.ajax({
+                type: 'POST',
+                url: '/home/search',
+                cache: false,
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content'),
+                    search: data
+                  },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.Error == 1) {
+                        Swal.fire('Error!', data.Message, 'error');
+                    } else if (data.Error == 0) {
+                        renderTaskList(data.html);
+                    }
+                },
+                error: function () {
+                    Swal.fire('Error!', 'Something went wrong, please try again.', 'error');
+                }
+            })
+        }else{
+            $.ajax({
+                type: 'GET',
+                url: '/home',
+                cache: false,
+                success: function (data) {
+                    if (data.Error == 1) {
+                        Swal.fire('Error!', data.Message, 'error');
+                      } else if (data.Error == 0) {
+
+                        renderTaskList(data.html);
+                      }
+                },
+                error: function () {
+                    Swal.fire('Error!', 'Something went wrong, please try again.', 'error');
+                }
+            })
+        }
+    })
+
+    function renderTaskList(tasks) {
+        let taskListHtml = ''; // Initialize an empty string for task list HTML
+
+        // Loop through each task and generate the HTML
+        tasks.forEach(function (task) {
+            taskListHtml += `
+                <ul class="list-group mt-2" style="cursor: pointer;">
+                    <li class="list-group-item d-flex justify-content-between align-items-center displayData">
+                        <div>
+                            <h6 id="displayData"
+                                class="task-title ${task.is_complete === 1 ? 'text-decoration-line-through' : ''}"
+                                data-display-title="${task.title}"
+                                data-display-description="${task.description}"
+                                data-status="${task.is_complete}"
+                                data-id="${task.id}"
+                                data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasEnd"
+                                aria-controls="offcanvasEnd">
+                                ${task.title}
+                            </h6>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-outline-success btn-sm btnUpdate" data-bs-toggle="modal" data-bs-target="#modalUpdateTask"
+                                    data-id="${ task.id }" data-title="${ task.title }" data-description="${ task.description }">
+                                <i class="fa-solid fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm" id="btnDelete" data-id-delete="${task.id}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            `;
+        });
+
+        if (tasks.length === 0) {
+            taskListHtml = `
+                <div class="text-center mt-4">
+                    <h5 class="text-muted">No Task Found</h5>
+                </div>
+            `;
+        }
+
+        // Update the task list container with the generated HTML
+        $('#taskList').html(taskListHtml);
+    }
+})
+

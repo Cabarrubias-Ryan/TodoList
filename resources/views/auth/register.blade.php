@@ -57,6 +57,14 @@
             </div>
         </div>
     </main>
+    <div class="preloader" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-4">
+            <span style="font-size: 1.2rem" class="text-primary">Loading please wait....</span>
+        </div>
+    </div>
     <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

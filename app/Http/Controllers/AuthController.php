@@ -45,7 +45,7 @@ class AuthController extends Controller
                 $AddingData = Account::create($data);
 
                 if($AddingData){
-                    return response()->json(['Error' => 0, 'Message' => 'Account Successfully Created.']);
+                    return response()->json(['Error' => 0, 'Message' => 'Account Successfully Created.', 'Redirect' => route('login')]);
                 }
 
             }
@@ -54,24 +54,15 @@ class AuthController extends Controller
     }
     public function loginAccount(Request $request)
     {
-        // Validate the input
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
 
         $account = Account::where('username', $request->username)->first();
 
         if (!$account || !Hash::check($request->password, $account->password)) {
-            return redirect()->back()->withErrors(['username' => 'Invalid credentials'])->withInput();
+            return response()->json(['Error' => 1, 'Message' => 'Invalid Email or Password.']);
         }
 
         Auth::login($account);
-        return redirect('/home')->with('login_success', 'You have successfully logged in.');
+        return response()->json(['Error' => 0, 'Redirect' => route('home')]);
     }
     public function redirect($provider)
     {

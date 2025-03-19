@@ -81,7 +81,7 @@ $(document).ready(function () {
                     showConfirmButton: true,
                     confirmButtonText: 'OK'
                     }).then(result => {
-                        location.reload();
+                        window.location.href = data.Redirect;
                     });
                 }
             },
@@ -93,3 +93,52 @@ $(document).ready(function () {
         })
     })
 })
+
+
+$(document).ready(function () {{
+    $('#loginBtn').on('click', function () {
+        const fields = [
+            {id: 'username', label: 'Username'},
+            {id: 'password', label: 'Password'}
+        ];
+
+        const isValid = validateForm(fields);
+
+        if(!isValid){
+            console.log('clicked');
+            event.preventDefault();
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: 'login',
+            cache: false,
+            data: $('#loginData').serialize(),
+            dataType: 'json',
+            beforeSend: function () {
+                $('.preloader').show();
+            },
+            success: function (data) {
+                $('.preloader').hide();
+                if (data.Error == 1) {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.Message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                        })
+                } else if (data.Error == 0) {
+                    window.location.href = data.Redirect;
+                }
+            },
+            error: function () {
+                $('.preloader').hide();
+                Swal.fire('Error!', 'Something went wrong, please try again.', 'error');
+                location.reload();
+            },
+        })
+    })
+}})

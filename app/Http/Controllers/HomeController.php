@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $task = Task::where('user_id', Auth::id())->whereNull('deleted_at')->get();
+        if ($request->ajax()) {
+            return response()->json(['html' => $task, 'Error' => 0]);
+        }
         return view('content.home', compact('task'));
     }
     public function addTask(Request $request)
@@ -54,6 +57,27 @@ class HomeController extends Controller
 
         if($result){
             return response()->json(['Error' => 0, 'Message' => 'Task Successfully Deleted.']);
+        }
+    }
+    public function search(Request $request)
+    {
+        $query = $request->search;
+        $task = Task::where('title', 'like', '%' . $query . '%')->where('user_id', Auth::id())->whereNull('deleted_at')->get();
+
+        return response()->json(['html' => $task, 'Error' => 0]);
+    }
+    public function setStatus(Request $request)
+    {
+        $currentStatus = $request->status == 0 ? 1 : 0;
+
+        $data = [
+            'is_complete' => $currentStatus,
+            'updated_at' => now(),
+        ];
+
+        $result = Task::where('id', $request->statusID)->update($data);
+        if ($result){
+            return response()->json(['Error' => 0, 'Message' => 'Task Successfully Change the status.']);
         }
     }
 }
